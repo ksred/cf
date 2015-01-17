@@ -21,16 +21,6 @@ class Account extends REST_Controller {
 	*/
 	public function settings_get($uid, $db = 0)
 	{
-		if ($db != 0)
-		{
-			// Check for settings in cache
-			$map = $this->get_user_map($uid);
-			if ($map)
-			{
-				$this->response(array('success' => 1, 'message' => $map), 200);
-			}
-		}
-
 		$settings = $this->Model_account->get_settings($uid);
 		if (empty($settings))
 		{
