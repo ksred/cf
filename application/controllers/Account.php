@@ -42,7 +42,7 @@ class Account extends REST_Controller {
 	/*
 	* Set user settings
 	*
-	* @param	string		uid				-		uid of user settings to get
+	* @param	string		uid				-		uid of user settings to set
 	* @param	int			notify_send		-		notify message sent
 	* @param	int			notify_receive	-		notify message received 
 	* @param	int			notify_deliver	-		notify message delivered

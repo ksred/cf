@@ -1,46 +1,10 @@
 <?php
-/**
- * CodeIgniter
- *
- * An open source application development framework for PHP 5.2.4 or newer
- *
- * This content is released under the MIT License (MIT)
- *
- * Copyright (c) 2014, British Columbia Institute of Technology
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * @package	CodeIgniter
- * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
- * @since	Version 1.0.0
- * @filesource
- */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+	<title>CF demo</title>
 
 	<style type="text/css">
 
@@ -105,18 +69,104 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <body>
 
 <div id="container">
-	<h1>Welcome to CodeIgniter!</h1>
+	<h1>CF user settings and messaging</h1>
 
 	<div id="body">
-		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
+		<p>Use the forms below to update user settings and to send a test message. The user settings will be checked agaist and notification results returned.</p>
 
-		<p>If you would like to edit this page you'll find it located at:</p>
-		<code>application/views/welcome_message.php</code>
+		<?php if (!empty($response)): ?>
+			<p>
+			<h2>Response</h2>
+			<strong><?= $response; ?></strong>
 
-		<p>The corresponding controller for this page is found at:</p>
-		<code>application/controllers/Welcome.php</code>
+			<h3>Log output:</h3>
+			<code><?= $log ?></code>
+			</p>
+		<?php endif; ?>
 
-		<p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="user_guide/">User Guide</a>.</p>
+		<p>Recipient UID defaulted to:</p>
+		<code>bb44bf07cf9a2db0554bba63a03d822c927deae77df101874496df5a6a3e896d</code>
+
+		<p>Sender UID defaulted to:</p>
+		<code>8d1302e8aa54bd59e2f4f398c66ff94f2650d4d34679ee02cf5fc61b9cabcee5</code>
+
+		<p>Below are forms for full CRUD on settings, followed by sending a test message. The results of the notification will be returned.</p>
+
+		<h3>CRUD for account settings</h3>
+		<h4>Create settings</h4>
+		<p>These are not pulled from the database and will all default to true. Settings pulled from database are in update section below</p>
+		<code>POST /account/settings</code>
+
+		<form action="/http/create" method="POST">
+			<label>For user:</label><input name="uid" value="bb44bf07cf9a2db0554bba63a03d822c927deae77df101874496df5a6a3e896d" readonly>
+			<br />
+			<select name="notify_send">
+				<option value="0">Send notifications INACTIVE</option>
+				<option value="1" selected='selected'>Send notifications ACTIVE</option>
+			</select>
+			<br />
+			<select name="notify_receive">
+				<option value="0">Receive notifications INACTIVE</option>
+				<option value="1" selected="selected">Receive notifications ACTIVE</option>
+			</select>
+			<br />
+			<select name="notify_deliver">
+				<option value="0">Deliver notifications INACTIVE</option>
+				<option value="1" selected="selected">Deliver notifications ACTIVE</option>
+			</select>
+			<br />
+
+			<input type="submit" value="Save settings" />
+		</form>
+		<h4>Update settings</h4>
+		<code>PUT /account/settings</code>
+
+		<form action="/http/update" method="POST">
+			<label>For user:</label><input name="uid" value="bb44bf07cf9a2db0554bba63a03d822c927deae77df101874496df5a6a3e896d" readonly>
+			<br />
+			<select name="notify_send">
+				<option value="0" <?= (isset($notify_send) && ($notify_send == 0)) ? "selected='selected'" : '' ?>>Send notifications INACTIVE</option>
+				<option value="1" <?= (isset($notify_send) && ($notify_send == 1)) ? "selected='selected'" : '' ?>>Send notifications ACTIVE</option>
+			</select>
+			<br />
+			<select name="notify_receive">
+				<option value="0" <?= (isset($notify_receive) && ($notify_receive == 0)) ? "selected='selected'" : '' ?>>Receive notifications INACTIVE</option>
+				<option value="1" <?= (isset($notify_receive) && ($notify_receive == 1)) ? "selected='selected'" : '' ?>>Receive notifications ACTIVE</option>
+			</select>
+			<br />
+			<select name="notify_deliver">
+				<option value="0" <?= (isset($notify_deliver) && ($notify_deliver == 0)) ? "selected='selected'" : '' ?>>Deliver notifications INACTIVE</option>
+				<option value="1" <?= (isset($notify_deliver) && ($notify_deliver == 1)) ? "selected='selected'" : '' ?>>Deliver notifications ACTIVE</option>
+			</select>
+			<br />
+
+			<input type="submit" value="Update settings" />
+		</form>
+		<hr />
+
+		<h4>Delete settings</h4>
+		<code>DELETE /account/settings</code>
+
+		<form action="/http/delete" method="POST">
+			<label>For user:</label><input name="uid" value="bb44bf07cf9a2db0554bba63a03d822c927deae77df101874496df5a6a3e896d" readonly>
+			<br />
+			<input type="submit" value="Delete settings" />
+		</form>
+		<hr />
+
+		<h3>Message sending</h3>
+		<code>POST /message </code>
+
+		<form action="/http/message" method="POST">
+			<label>To user:</label><input name="to" value="bb44bf07cf9a2db0554bba63a03d822c927deae77df101874496df5a6a3e896d" readonly>
+			<br />
+			<label>From user:</label><input name="from" value="8d1302e8aa54bd59e2f4f398c66ff94f2650d4d34679ee02cf5fc61b9cabcee5" readonly>
+			<br />
+			<textarea name="message" placeholder="Type message here">
+			</textarea>
+			<input type="submit" value="Send message" />
+		</form>
+		<hr />
 	</div>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>

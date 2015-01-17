@@ -96,7 +96,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
 
-$autoload['libraries'] = array();
+$autoload['libraries'] = array('curl');
 
 
 /*
@@ -112,7 +112,7 @@ $autoload['libraries'] = array();
 |	$autoload['drivers'] = array('session', 'cache');
 */
 
-$autoload['drivers'] = array();
+$autoload['drivers'] = array('session');
 
 
 /*
