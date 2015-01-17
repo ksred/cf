@@ -250,6 +250,12 @@ class Message extends REST_Controller {
 		if (empty($settings))
 		{
 			log_message('debug', 'Settings do not exist for user '.$uid);
+			$map_set = $this->set_user_map($uid, $map);
+			if (!$map_set)
+			{
+				// We do not want to return a hard error here, but we need to log
+				log_message('error', 'Settings could not be saved in cache');
+			}
 			return $map;
 		}
 
