@@ -161,16 +161,35 @@ class Account extends REST_Controller {
 		$this->response(array('success' => 1, 'message' => 'Account settings deleted'), 200);
 	}
 
+	/*
+	* Set user settings to map in memcached
+	* NOTE: This will be abstracted into a library in production
+	*
+	* @param	string		key		-		key of settings, user uid
+	* @param	string		value	-		value of settings, send.receive.deliver - 101
+	*
+	* @return	response	json	-		json response success/error
+	*
+	*/
 	private function set_user_map ($key, $value)
 	{
 		return $this->cache->save($key, $value, (60 * 60 * 24 * 30)); // One month validity
 	}
 
+	/*
+	* Retrieve user settings from map in memcache
+	* NOTE: This will be abstracted into a library in production
+	*
+	* @param	string		key		-		key to get settings for, user uid
+	*
+	* @return	response	json	-		json response success/error
+	*
+	*/
 	private function get_user_map ($key)
 	{
 		return $this->cache->get($key);
 	}
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/Welcome.php */
+/* End of file Account.php */
+/* Location: ./application/controllers/Account.php */
