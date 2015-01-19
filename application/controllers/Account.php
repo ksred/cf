@@ -147,6 +147,15 @@ class Account extends REST_Controller {
 		{
 			$this->response(array('success' => 0, 'message' => 'Account settings not deleted'), 400);
 		}
+		
+		// Set default settings in memcached/redis
+		$map = "111";
+		$map_set = $this->set_user_map($uid, $map);
+		if (!$map_set)
+		{
+			// We do not want to return a hard error here, but the user must be notified
+			$this->response(array('success' => 1, 'message' => 'Account settings deleted, could not set user map'), 200);
+		}
 
 		$this->response(array('success' => 1, 'message' => 'Account settings deleted'), 200);
 	}
